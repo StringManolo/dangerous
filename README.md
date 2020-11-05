@@ -8,7 +8,7 @@ Just don't be dumb.
   
 I take no responsability for bad usage.  
   
-
+## RANSOMWARE (sm.py)
 ### Examples:
 
 Encrypt files in current folder:  

