@@ -13,17 +13,18 @@ I take no responsability for bad usage.
 
 Encrypt files in current folder:  
 ```
-python smr.py -v -a txt -e -k 1337 -p ./
+python smr.py -v -a txt -e -k 1337 -p ./ -c
 ```
   
 Decrypt files in current folder:  
 ```
-python smr.py -v -a txt -d -k 1337 -p ./
+python smr.py -v -a txt -d -k 1337 -p ./ -c
 ```
   
 ### Arguments:  
 Usage: python smr.py [-option1] [-option2] [...]  
- -a,  --adition  Add/Remove file extension to/from file.  
+ -a,  --adition  Add/Remove file extension to/from file.   
+ -c,  --compression  Compress/Decompress the files to reduce end size.  
  -d,  --decrypt  Only decrypt. If a non encrypted file is in the path, will be encrypted.  
  -e,  --encrypt  Only encrypt. Uses weak Symmetric-key algorithm. Similar to Vernan or Affine encryption.  
  -h,  --help     Open this menu.  

