@@ -145,31 +145,37 @@ def Myszkowski(string, key):
     i = 0
     result = ""
     column = ""
+    columnAux = []
+    columns = []
     while i < len(y):
         j = 0
         k = 0
         l = 0
         if len(y[i]) > 1:
-            print(f"{y[i]} has more than 1 ocurrence")
+#            print(f"{y[i]} has more than 1 ocurrence")
+            column = ""
+            columnAux = []
             while k < len(y[i]): 
-                print(f"PO: {y[i][k].split('|')[0]}")
+#                print(f"PO: {y[i][k].split('|')[0]}")
 #                k += 1
 
                 #get colums:
-                column += f"PO:{y[i][k].split('|')[0]}: "
                 while l < len(table):
                     column += table[l][int(y[i][k].split("|")[0])]
                     l += 1
-                column += "\n"
+                columnAux.append(column)
+                column = ""
                 k += 1
                 l = 0
+            columns.append(columnAux)
 
+            
         else:
-            print(f"{y[i]} has 1 ocurrence")
+#            print(f"{y[i]} has 1 ocurrence")
             # get column:
             pos = int(y[i][0].split("|")[0])
-            print(pos)
-            print(f"Table {len(table)}")
+#            print(pos)
+#            print(f"Table {len(table)}")
             while j < len(table):
                 result += table[j][pos]
                 j += 1
@@ -178,7 +184,27 @@ def Myszkowski(string, key):
         i += 1
 
     print(f"RESULT: {result}")
-    print(f"\nCOLUMN: {column}")
+#    print(f"\nCOLUMN: {column}")
+    print(f"\nCOLUMNS: {columns}")
+
+
+
+    res = ""
+    j = 0
+    auxRes = []
+    while j < len(columns):
+        i = 0
+        while i < len(columns[0][0]):
+            res += "".join([row[i] for row in columns[j]])
+            
+            i += 1
+        auxRes.append(res)
+        res = ""
+        j += 1
+
+
+#    print(f"res: {res}")
+    print(f"AuxRes: {auxRes}")
 
 Myszkowski("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789Este es el texto a trasposicionar", "EstaEsLaKey")
 #Myszkowski("", "abxdcazbeafgbmhai")
