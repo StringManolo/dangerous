@@ -1,4 +1,16 @@
+import secrets
+
 def Myszkowski(string, key):
+# Key to uppercase and key remove spaces
+    i = 0
+    aux = []
+    while i < len(key):
+        if key[i] != " ":
+            aux.append(key[i].upper())
+        i += 1
+    key = aux[:]
+
+
 # alfabetical position number :
     keyOrder = []
     i = 0
@@ -71,7 +83,7 @@ def Myszkowski(string, key):
 """)
 
 
-
+# create table based on key length :
     i = 0
     j = 0
     table = []
@@ -84,9 +96,26 @@ def Myszkowski(string, key):
         row.append(string[i])
         i += 1
         j += 1
+    
+# padding and pendding row
+    if j < len(key):
+        i = 0
+        while i < (len(key) - j):
+            # chosing randomly the padding from the charset
+            row.append(secrets.choice(table[secrets.randbelow(len(table))]))
+            # I feel this way is more secure. 
+            i += 1
+        table.append(row)
+
 
     prettyPrint = ']\n['.join(map(lambda x: ', '.join(map(str, x)), table))
     print(f"[{prettyPrint}]")
 
-Myszkowski("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789", "swindon")
+
+
+# End of cipher :
+    
+
+
+Myszkowski("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789Este es el texto a trasposicionar", "EstaEsLaKey")
 #Myszkowski("", "abxdcazbeafgbmhai")
