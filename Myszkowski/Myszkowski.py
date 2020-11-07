@@ -114,7 +114,23 @@ def Myszkowski(string, key):
 
 
 # End of cipher :
+    i = 0
+    row = []
+    aux = []
+    while i < len(key):
+        j = 0
+        veces = 0
+        row = []
+        while j < len(key):
+            if key[i] == key[j]:
+                veces += 1
+                row.append(f"POS:{j} KEY:{key[j]}")
+#                print(f"Columna {i} se encontró {veces} veces en las postiones key[{j}] y")
+            j += 1
+        aux.append(row)
+        i += 1
     
+    print(aux)
 
 
 Myszkowski("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789Este es el texto a trasposicionar", "EstaEsLaKey")
