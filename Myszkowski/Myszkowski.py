@@ -124,14 +124,22 @@ def Myszkowski(string, key):
         while j < len(key):
             if key[i] == key[j]:
                 veces += 1
-                row.append(f"POS:{j} KEY:{key[j]}")
+                row.append(f"{j}|{key[j]}")
 #                print(f"Columna {i} se encontró {veces} veces en las postiones key[{j}] y")
             j += 1
         aux.append(row)
         i += 1
     
-    print(aux)
+    # Remove duplicates
+    *y,=map(list,{*map(tuple,aux)})
+#    print(y)
 
+    # Order by pos
+    y.sort(key=lambda x:int(x[0].split("|")[0]))
+#    print(f"\n{y}")
+
+    prettyPrint = ']\n['.join(map(lambda x: ', '.join(map(str, x)), y))
+    print(f"\n[{prettyPrint}]")
 
 Myszkowski("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789Este es el texto a trasposicionar", "EstaEsLaKey")
 #Myszkowski("", "abxdcazbeafgbmhai")
