@@ -144,10 +144,26 @@ def Myszkowski(string, key):
 
     i = 0
     result = ""
+    column = ""
     while i < len(y):
         j = 0
+        k = 0
+        l = 0
         if len(y[i]) > 1:
             print(f"{y[i]} has more than 1 ocurrence")
+            while k < len(y[i]): 
+                print(f"PO: {y[i][k].split('|')[0]}")
+#                k += 1
+
+                #get colums:
+                column += f"PO:{y[i][k].split('|')[0]}: "
+                while l < len(table):
+                    column += table[l][int(y[i][k].split("|")[0])]
+                    l += 1
+                column += "\n"
+                k += 1
+                l = 0
+
         else:
             print(f"{y[i]} has 1 ocurrence")
             # get column:
@@ -156,13 +172,13 @@ def Myszkowski(string, key):
             print(f"Table {len(table)}")
             while j < len(table):
                 result += table[j][pos]
- #               result.append(y[i])
                 j += 1
             result += "|"
 
         i += 1
 
     print(f"RESULT: {result}")
+    print(f"\nCOLUMN: {column}")
 
 Myszkowski("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789Este es el texto a trasposicionar", "EstaEsLaKey")
 #Myszkowski("", "abxdcazbeafgbmhai")
